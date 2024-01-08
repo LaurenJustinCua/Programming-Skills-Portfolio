@@ -1,1 +1,137 @@
+"""
+Created on Mon Jan  8 03:07:48 2024
 
+@author: Lauren Justin
+"""
+
+"""
+ Lauren's Vending Machine
+"""
+items_in_stock = [
+    {
+        "item_id": 1,
+        "item_name": "Hershey",
+        'item_price': 3.50,
+    },
+    {
+        "item_id": 2,
+        "item_name": "Doritos",
+        'item_price': 5,
+    },
+    {
+        "item_id": 3,
+        "item_name": "Water",
+        'item_price': 2,
+    },
+    {
+        "item_id": 4,
+        "item_name": "coke",
+        'item_price': 3,
+    },
+    {
+        "item_id": 5,
+        "item_name": "Gummy bears",
+        'item_price': 5,
+    },
+]
+
+the_item = []
+
+reciept = """
+\t\tPRODUCT -- PRICE
+"""
+
+sum = 0
+
+run = True
+
+print("------- Lauren's Vending Machine ------\n\n")
+print("----------The Items In Stock Are----------\n\n")
+
+for i in items_in_stock:
+    print(f"Item: {i['item_name']} --- Price: {i['item_price']} --- Item ID: {i['item_id']}")
+
+def sum(the_item):
+    sum = 0
+    
+    for i in the_item:
+        sum += i["item_price"]
+    return sum
+
+def machine(items_in_stock, the_item):
+    while run:
+        
+        buy_item = int(input("\n\nEnter the item code of the product you want to buy: "))
+        
+        if buy_item < len(items_in_stock):
+            the_item.append(items_in_stock[buy_item])
+        else:
+            print("THE PRODUCT IS WRONG!!!")
+            
+        more_items = str(input("press any key to add more items and press q to quit.. "))
+        
+        if more_items == "q":
+            Run = True
+
+    rec_bool = int(input("1. print the reciept? 2. only print total sum.. "))
+    if rec_bool == 1:
+        print(create_reciept(the_item, reciept))
+    elif rec_bool == 2:
+        print(sum(the_item))
+    else:
+        print("INVALID ENTRY")
+        
+def create_reciept(the_item, reciept):
+    
+    for i in the_item:
+        reciept += f"""
+        \t{i["item_name"]} -- {i['item_price']}
+        """
+    
+    reciept += f"""
+        \tTotal --- {sum(the_item)}
+    
+        """
+    return reciept 
+
+total = sum(the_item)
+total_money = 0
+
+print("\nTo purchase, please insert money.\n")
+print("The available bills are {bold}5{normal}, {bold}10{normal}, {bold}20{normal}, and {bold}50{normal}")
+print("All coins are accepted. \n")
+print("The minimum amount is {bold}AED 5{normal}")
+
+money = (float(input("Please insert here: ")))
+total_money += money   
+
+while total_money < total:
+    print("Almost there! Just {bold}AED {total - totalmoney} left.")
+    money = (float(input("\nPlease insert: ")))
+    total_money += money
+
+if total_money >= total:
+    print("\nGreat! you inserted a total of {bold}AED {totalmoney}{normal}.")
+
+else:
+    print("\n{bold}Invalid bills/s or coin/s.{normal}")
+    print("Please Try Again")
+    
+    print("The available bills are {bold}5{normal}, {bold}10{normal}, {bold}20{normal}, {bold5}50{normal}")
+    print("All coins are accepted.\n")
+    print("The minimum amount is {bold}AED 5{normal}")
+    
+    money = (float(input("\nPlease insert here: ")))
+    total_money +=money
+    while total_money <= total:
+        print("Almost there! Just AED {total -total_money} left. ")
+        money = float(input("\n Please insert here: "))
+        total_money += money
+change = total_money - total
+if change <= 0:
+    print("You have no change.\n")
+    print("Thank you!\n")
+    
+else:
+    print("Your change is {bold}AED {change}{normal}\n")
+    print("Thank You!")
