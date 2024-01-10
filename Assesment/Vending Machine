@@ -1,137 +1,71 @@
 """
-Created on Mon Jan  8 03:07:48 2024
+Created on Wed Jan 10 10:07:57 2024
 
 @author: Lauren Justin
 """
 
 """
- Lauren's Vending Machine
+Lauren's Vending Machine'
 """
-items_in_stock = [
-    {
-        "item_id": 1,
-        "item_name": "Hershey",
-        'item_price': 3.50,
-    },
-    {
-        "item_id": 2,
-        "item_name": "Doritos",
-        'item_price': 5,
-    },
-    {
-        "item_id": 3,
-        "item_name": "Water",
-        'item_price': 2,
-    },
-    {
-        "item_id": 4,
-        "item_name": "coke",
-        'item_price': 3,
-    },
-    {
-        "item_id": 5,
-        "item_name": "Gummy bears",
-        'item_price': 5,
-    },
-]
-
-the_item = []
-
-reciept = """
-\t\tPRODUCT -- PRICE
-"""
-
-sum = 0
-
-run = True
-
 print("------- Lauren's Vending Machine ------\n\n")
 print("----------The Items In Stock Are----------\n\n")
 
-for i in items_in_stock:
-    print(f"Item: {i['item_name']} --- Price: {i['item_price']} --- Item ID: {i['item_id']}")
+class VendingMachine:
+    def __init__(self):
+        self.products = {
+            '1': {'name': 'Hershey', 'price': 3.50, 'quantity': 8},
+            '2': {'name': 'Doritos', 'price': 5, 'quantity': 8},
+            '3': {'name': 'Water', 'price': 2, 'quantity': 10},
+            '4': {'name': 'Coke', 'price':3, 'quantity:': 10 },
+            '5': {'name': 'Gummy Bears', 'price':7, 'quantity:': 6 }
+        }
+        self.balance = 0
 
-def sum(the_item):
-    sum = 0
-    
-    for i in the_item:
-        sum += i["item_price"]
-    return sum
+    def display_menu(self):
+        print("Welcome to the Vending Machine!")
+        print("Available Products:")
+        for code, product in self.products.items():
+            print(f"{code}: {product['name']} - AED{product['price']}")
 
-def machine(items_in_stock, the_item):
-    while run:
-        
-        buy_item = int(input("\n\nEnter the item code of the product you want to buy: "))
-        
-        if buy_item < len(items_in_stock):
-            the_item.append(items_in_stock[buy_item])
+    def insert_money(self):
+        money = float(input("Insert money (in AED): "))
+        self.balance += money
+
+    def select_product(self):
+        product_code = input("Enter the code of the product you want to purchase: ")
+        if product_code in self.products:
+            product = self.products[product_code]
+            if product['quantity'] > 0 and self.balance >= product['price']:
+                self.balance -= product['price']
+                product['quantity'] -= 1
+                print(f"Enjoy your {product['name']}! Remaining balance: ${self.balance:.2f}")
+            else:
+                print("Insufficient funds or product out of stock.")
         else:
-            print("THE PRODUCT IS WRONG!!!")
-            
-        more_items = str(input("press any key to add more items and press q to quit.. "))
-        
-        if more_items == "q":
-            Run = True
+            print("Invalid product code.")
 
-    rec_bool = int(input("1. print the reciept? 2. only print total sum.. "))
-    if rec_bool == 1:
-        print(create_reciept(the_item, reciept))
-    elif rec_bool == 2:
-        print(sum(the_item))
-    else:
-        print("INVALID ENTRY")
-        
-def create_reciept(the_item, reciept):
-    
-    for i in the_item:
-        reciept += f"""
-        \t{i["item_name"]} -- {i['item_price']}
-        """
-    
-    reciept += f"""
-        \tTotal --- {sum(the_item)}
-    
-        """
-    return reciept 
+    def return_change(self):
+        print(f"Returning change: ${self.balance:.2f}")
+        self.balance = 0
 
-total = sum(the_item)
-total_money = 0
+    def run(self):
+        while True:
+            self.display_menu()
+            print(f"Your current balance: ${self.balance:.2f}")
+            action = input("Choose an action (1: Insert Money, 2: Select Product, 3: Return Change, 4: Exit): ")
 
-print("\nTo purchase, please insert money.\n")
-print("The available bills are {bold}5{normal}, {bold}10{normal}, {bold}20{normal}, and {bold}50{normal}")
-print("All coins are accepted. \n")
-print("The minimum amount is {bold}AED 5{normal}")
+            if action == '1':
+                self.insert_money()
+            elif action == '2':
+                self.select_product()
+            elif action == '3':
+                self.return_change()
+            elif action == '4':
+                print("Thank you for using the Vending Machine. Have a great day!")
+                break
+            else:
+                print("Invalid action. Please try again.")
 
-money = (float(input("Please insert here: ")))
-total_money += money   
-
-while total_money < total:
-    print("Almost there! Just {bold}AED {total - totalmoney} left.")
-    money = (float(input("\nPlease insert: ")))
-    total_money += money
-
-if total_money >= total:
-    print("\nGreat! you inserted a total of {bold}AED {totalmoney}{normal}.")
-
-else:
-    print("\n{bold}Invalid bills/s or coin/s.{normal}")
-    print("Please Try Again")
-    
-    print("The available bills are {bold}5{normal}, {bold}10{normal}, {bold}20{normal}, {bold5}50{normal}")
-    print("All coins are accepted.\n")
-    print("The minimum amount is {bold}AED 5{normal}")
-    
-    money = (float(input("\nPlease insert here: ")))
-    total_money +=money
-    while total_money <= total:
-        print("Almost there! Just AED {total -total_money} left. ")
-        money = float(input("\n Please insert here: "))
-        total_money += money
-change = total_money - total
-if change <= 0:
-    print("You have no change.\n")
-    print("Thank you!\n")
-    
-else:
-    print("Your change is {bold}AED {change}{normal}\n")
-    print("Thank You!")
+if __name__ == "__main__":
+    vending_machine = VendingMachine()
+  
